@@ -13,9 +13,10 @@
     </div>
 
     <div style="margin-top: 1rem">
-      <button onclick="setWeek('math')">수학 수업 요일선택</button
+      <button id="btnMath">수학 수업 요일선택</button
       ><span id="mathWeek">요일을 선택하세요!</span>
     </div>
+    <input id="input" type="text" oninput="debouncedInput()" />
 
     <script>
       const WEEKS = "일월화수목금토";
@@ -32,13 +33,54 @@
         kor: getNextWeek(),
         math: getNextWeek(),
       };
+
       const setWeek = (sub) => {
         const span = document.getElementById(`${sub}Week`);
         span.innerText = nextWeekFunction[sub]();
       };
+
+      const debounce = (cb, delay) => {
+        let timer;
+        return (...args) => {
+          if (timer) clearTimeout(timer); //timer가 존재하면 이전timer는 취소후
+          timer = setTimeout(cb, delay, ...args); //새 timer설정
+        };
+      };
+
+      const throttle = (cb, delay) => {
+        let timer;
+        return (...args) => {
+          if (timer) return;
+          timer = setTimeout(() => {
+            cb(...args);
+            timer = null;
+          }, delay);
+        };
+      };
+
+      const debouncedInput = debounce(() => {
+        let date = new Date();
+        let inputValue = document.getElementById("input").value;
+        console.log(`${date.toISOString()} search>> ${inputValue}`);
+      }, 500);
+      const th = throttle(() => {
+        const span = document.getElementById(`mathWeek`);
+        span.innerText = nextWeekFunction["math"]();
+      }, 500);
+      //const th = throttle(setWeek("math"), 500);
+      // const db = debounce(setWeek("kor"), 500);
+      const db = debounce(() => {
+        const span = document.getElementById(`korWeek`);
+        span.innerText = nextWeekFunction["kor"]();
+      }, 500);
+
       document.addEventListener("DOMContentLoaded", () => {
+        //국어버튼=debounce처리
         const btnKor = document.getElementById("btnKor");
-        btnKor.addEventListener("click", () => setWeek("kor"));
+        btnKor.addEventListener("click", db);
+        //수학버튼 throttle처리
+        const btnMath = document.getElementById("btnMath");
+        btnMath.addEventListener("click", th);
       });
     </script>
   </body>
