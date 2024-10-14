@@ -4,7 +4,7 @@ const assert = require("assert");
 
 function replacer(match) {
   //콜백함수 따로 만들어주는 방법, match:매칭된 각 문자
-  return "*" + match.toLowerCase() + "*-";
+  return `*${match.toLowerCase()}*-`;
 }
 const upperToLower = (str) => {
   //대문자를 소문자로
@@ -16,7 +16,11 @@ const lowerToUpper = (str) => {
   return str.replace(/[a-z]/g, (a) => a.toUpperCase());
 };
 
-console.log(upperToLower("Senior Coding Learning JS")); // ⇒ '*s*-enior *c*-oding *l*-earning *j*-*s*-'
-console.log(lowerToUpper("senior coding learning js"));
+//console.log(upperToLower("Senior Coding Learning JS")); // ⇒ '*s*-enior *c*-oding *l*-earning *j*-*s*-'
+//console.log(lowerToUpper("senior coding learning js"));
 
-//TODO : test code
+//test code
+assert.deepStrictEqual(
+  upperToLower("Senior Coding Learning JS"),
+  "*s*-enior *c*-oding *l*-earning *j*-*s*-"
+);
