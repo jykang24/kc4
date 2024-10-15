@@ -14,7 +14,7 @@ const print_cal = (date) => {
   let current_date = this_date.getDate(); //날짜표시용
   let strweek = "".padStart(i * 4, " "); //주마다 출력함, 첫주에 맨앞 공백있다면 출력
 
-  console.log(`${this_date.getFullYear()}년 ${month}월`);
+  console.log(`       ${this_date.getFullYear()}년 ${month}월`); //출력형식 맞춰주기위한 앞공백
   console.log("일  월  화  수  목  금  토");
   while (current_date <= last_day) {
     //이달 마지막날짜까지 반복
