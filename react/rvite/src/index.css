@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .btn {
+    @apply rounded px-2 shadow-md hover:bg-slate-500 hover:text-white focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
+  }
+
+  .btn-primary {
+    @apply rounded bg-blue-500 px-2 text-white shadow-md hover:bg-blue-400 focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
+  }
+
+  .btn-danger {
+    @apply rounded bg-red-500 px-2 text-white shadow-md hover:bg-red-400 focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
+  }
+}
