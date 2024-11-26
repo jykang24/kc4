@@ -16,7 +16,7 @@ export type Session = {
   loginUser: LoginUser | null;
   cart: CartItem[];
 };
-type CartItem = {
+export type CartItem = {
   id: number;
   name: string;
   price: number;
@@ -38,11 +38,29 @@ function App() {
     setSession({ ...session, loginUser: { id, name } });
   };
 
+  const saveCartItem = (cartItem: CartItem) => {
+    const isAdding = !cartItem.id;
+    if (isAdding) {
+      cartItem.id = Math.max(...session.cart.map(({ id }) => id)) + 1;
+      setSession({ ...session, cart: [...session.cart, cartItem] });
+    } else {
+      setSession({
+        ...session,
+        cart: [
+          ...session.cart.map((item) =>
+            item.id === cartItem.id ? cartItem : item
+          ),
+        ],
+      });
+    }
+  };
+
   const removeCartItem = (itemid: number) =>
     setSession({
       ...session,
       cart: session.cart.filter(({ id }) => id !== itemid),
     });
+
   return (
     <>
       {session.loginUser?.id ? (
@@ -50,6 +68,7 @@ function App() {
           session={session}
           logout={logout}
           removeCartItem={removeCartItem}
+          saveCartItem={saveCartItem}
           plusCount={plusCount}
         />
       ) : (
