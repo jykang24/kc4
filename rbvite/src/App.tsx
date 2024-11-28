@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import './App.css';
-import Hello2 from './components/Hello2';
 import My from './components/My';
 
 const SampleSession: Session = {
@@ -33,11 +32,22 @@ function App() {
     setCount(count + 1);
     console.log('plus count');
   };
+  const removeCartItem = (itemId: number) => {
+    setSession({
+      ...session,
+      cart: [...session.cart.filter((item) => item.id != itemId)],
+    });
+  };
 
   return (
     <>
-      <Hello2 name='User' age={22} plusCount={plusCount} />
-      <My session={session} login={login} logout={logout} />
+      <My
+        session={session}
+        login={login}
+        logout={logout}
+        plusCount={plusCount}
+        removeCartItem={removeCartItem}
+      />
       <div className='card'>
         <button onClick={() => setCount((count) => count + 1)}>
           App.count is {count}

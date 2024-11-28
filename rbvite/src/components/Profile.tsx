@@ -1,11 +1,11 @@
 import { Session } from '../App';
-
 type Props = {
   session: Session;
   logout: () => void;
+  removeCartItem: (itemId: number) => void;
 };
 
-export default function Profile({ session, logout }: Props) {
+export default function Profile({ session, logout, removeCartItem }: Props) {
   return (
     <div>
       <span className='text-green-400'>{session.loginUser?.name}</span> logined
@@ -16,6 +16,9 @@ export default function Profile({ session, logout }: Props) {
         {session.cart.map((item) => (
           <li key={item.id}>
             {item.name} {item.price.toLocaleString()}원
+            <div>
+              <button onClick={() => removeCartItem(item.id)}> Delete</button>
+            </div>
           </li>
         ))}
       </ul>
