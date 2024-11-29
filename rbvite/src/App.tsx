@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import './App.css';
 import My from './components/My';
 import { type LoginHandler } from './components/Login';
+import { useCounter } from './components/hooks/counter-hook';
 
 const SampleSession: Session = {
   loginUser: { id: 1, name: 'Hong' },
@@ -20,9 +21,9 @@ export type Session = {
 };
 
 function App() {
-  const [count, setCount] = useState(0);
   const [session, setSession] = useState(SampleSession);
-
+  const { count, plusCount } = useCounter();
+  //const [count, setCount] = useState(0)
   const loginRef = useRef<LoginHandler>(null);
   const login = ({ id, name }: LoginUser) => {
     if (!id) {
@@ -38,10 +39,7 @@ function App() {
   const logout = () => {
     setSession({ ...session, loginUser: null });
   };
-  const plusCount = () => {
-    setCount(count + 1);
-    console.log('plus count');
-  };
+
   const removeCartItem = (itemId: number) => {
     setSession({
       ...session,
@@ -62,15 +60,12 @@ function App() {
         session={session}
         login={login}
         logout={logout}
-        plusCount={plusCount}
         removeCartItem={removeCartItem}
         addCartItem={addCartItem}
         ref={loginRef}
       />
       <div className='card'>
-        <button onClick={() => setCount((count) => count + 1)}>
-          App.count is {count}
-        </button>
+        <button onClick={plusCount}>App.count is {count}</button>
       </div>
     </>
   );

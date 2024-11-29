@@ -31,11 +31,9 @@ export default function Profile({
             <li key={item.id}>
               <strong>{item.name} </strong>
               {item.price.toLocaleString()}원
-              <div>
-                <button onClick={() => removeCartItem(item.id)}>
-                  <FaTrashCan />
-                </button>
-              </div>
+              <Button onClick={() => removeCartItem(item.id)}>
+                <FaTrashCan />
+              </Button>
             </li>
           ))
         ) : (
