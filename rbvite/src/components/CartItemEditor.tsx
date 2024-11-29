@@ -19,25 +19,34 @@ export default function CartItemEditor({ addCartItem, toggleAdding }: Props) {
     if (!idRef.current || !itemNameRef.current || !itemPriceRef.current) {
       return alert('DOM렌더링 전');
     }
-    if (!name || !price) {
-      return alert('상품명,가격을 모두 입력하세요!');
+    if (!name) {
+      alert('상품명을 입력하세요!');
+      return itemNameRef.current.focus();
+    } else if (!price) {
+      alert('가격을 입력하세요');
+      return itemPriceRef.current.focus();
     }
-
     addCartItem({ id, name, price });
-    toggleAdding();
+    //toggleAdding();
+    itemNameRef.current.value = '';
+    itemPriceRef.current.value = '';
   };
 
   useEffect(() => {
     if (!itemNameRef.current) return alert('itemNameRef렌더링 전');
+    console.log('useEffect확인용>>');
     itemNameRef.current.focus();
   });
 
   return (
     <>
-      <form onSubmit={submitHandler}>
+      <form onSubmit={submitHandler} className='gap-3'>
         <input type='hidden' ref={idRef} />
         <input placeholder='상품명...' ref={itemNameRef} />
         <input type='number' placeholder='가격...' ref={itemPriceRef} />
+        <button type='reset' onClick={toggleAdding}>
+          Cancel
+        </button>
         <button type='submit'>Save</button>
       </form>
     </>

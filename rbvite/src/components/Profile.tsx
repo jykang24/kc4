@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { CartItem, Session } from '../App';
 import CartItemEditor from './CartItemEditor';
+import { FaTrashCan } from 'react-icons/fa6';
 type Props = {
   session: Session;
   logout: () => void;
@@ -27,24 +28,27 @@ export default function Profile({
         {session.cart.length > 0 ? (
           session.cart.map((item) => (
             <li key={item.id}>
-              {item.name} {item.price.toLocaleString()}원
+              <strong>{item.name} </strong>
+              {item.price.toLocaleString()}원
               <div>
-                <button onClick={() => removeCartItem(item.id)}> Delete</button>
+                <button onClick={() => removeCartItem(item.id)}>
+                  <FaTrashCan />
+                </button>
               </div>
             </li>
           ))
         ) : (
           <li>There is no item.</li>
         )}
+        {isAdding ? (
+          <CartItemEditor
+            addCartItem={addCartItem}
+            toggleAdding={toggleAdding}
+          ></CartItemEditor>
+        ) : (
+          <button onClick={() => setAdding(true)}>+Add Item</button>
+        )}
       </ul>
-      {isAdding ? (
-        <CartItemEditor
-          addCartItem={addCartItem}
-          toggleAdding={toggleAdding}
-        ></CartItemEditor>
-      ) : (
-        <button onClick={() => setAdding(true)}>+Add</button>
-      )}
     </div>
   );
 }
