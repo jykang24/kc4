@@ -38,6 +38,13 @@ function App() {
       cart: [...session.cart.filter((item) => item.id != itemId)],
     });
   };
+  const addCartItem = (cartItem: CartItem) => {
+    cartItem.id =
+      session.cart.length > 0
+        ? Math.max(...session.cart.map(({ id }) => id)) + 1
+        : 1;
+    setSession({ ...session, cart: [...session.cart, cartItem] });
+  };
 
   return (
     <>
@@ -47,6 +54,7 @@ function App() {
         logout={logout}
         plusCount={plusCount}
         removeCartItem={removeCartItem}
+        addCartItem={addCartItem}
       />
       <div className='card'>
         <button onClick={() => setCount((count) => count + 1)}>

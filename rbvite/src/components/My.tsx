@@ -1,4 +1,4 @@
-import { type LoginUser, type Session } from '../App';
+import { CartItem, type LoginUser, type Session } from '../App';
 import Hello2 from './Hello2';
 import Login from './Login';
 import Profile from './Profile';
@@ -10,6 +10,7 @@ type Props = {
   logout: () => void;
   plusCount: () => void;
   removeCartItem: (itemId: number) => void;
+  addCartItem: (cartItem: CartItem) => void;
 };
 
 export default function My({
@@ -18,6 +19,7 @@ export default function My({
   logout,
   plusCount,
   removeCartItem,
+  addCartItem,
 }: Props) {
   const { id, name } = session.loginUser || { id: 0, name: '' };
   return (
@@ -28,6 +30,7 @@ export default function My({
           session={session}
           logout={logout}
           removeCartItem={removeCartItem}
+          addCartItem={addCartItem}
         />
       ) : (
         <Login login={login} />
