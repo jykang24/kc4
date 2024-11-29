@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import './App.css';
 import My from './components/My';
+import { type LoginHandler } from './components/Login';
 
 const SampleSession: Session = {
   loginUser: { id: 1, name: 'Hong' },
@@ -22,7 +23,16 @@ function App() {
   const [count, setCount] = useState(0);
   const [session, setSession] = useState(SampleSession);
 
+  const loginRef = useRef<LoginHandler>(null);
   const login = ({ id, name }: LoginUser) => {
+    if (!id) {
+      alert('Id를 입력하세요!');
+      return loginRef.current?.focus('id');
+    }
+    if (!name) {
+      alert('Name을 입력하세요!');
+      return loginRef.current?.focus('name');
+    }
     setSession({ ...session, loginUser: { id, name } });
   };
   const logout = () => {
@@ -55,6 +65,7 @@ function App() {
         plusCount={plusCount}
         removeCartItem={removeCartItem}
         addCartItem={addCartItem}
+        ref={loginRef}
       />
       <div className='card'>
         <button onClick={() => setCount((count) => count + 1)}>
