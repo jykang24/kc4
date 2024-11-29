@@ -1,6 +1,7 @@
+import { ForwardedRef, forwardRef } from 'react';
 import { CartItem, type LoginUser, type Session } from '../App';
 import Hello2 from './Hello2';
-import Login from './Login';
+import Login, { LoginHandler } from './Login';
 import Profile from './Profile';
 
 type Props = {
@@ -13,14 +14,10 @@ type Props = {
   addCartItem: (cartItem: CartItem) => void;
 };
 
-export default function My({
-  session,
-  login,
-  logout,
-  plusCount,
-  removeCartItem,
-  addCartItem,
-}: Props) {
+export default forwardRef(function My(
+  { session, login, logout, plusCount, removeCartItem, addCartItem }: Props,
+  ref: ForwardedRef<LoginHandler>
+) {
   const { id, name } = session.loginUser || { id: 0, name: '' };
   return (
     <>
@@ -33,8 +30,8 @@ export default function My({
           addCartItem={addCartItem}
         />
       ) : (
-        <Login login={login} />
+        <Login login={login} ref={ref} />
       )}
     </>
   );
-}
+});

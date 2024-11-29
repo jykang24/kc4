@@ -1,4 +1,11 @@
-import { FormEvent, useEffect, useRef } from 'react';
+import {
+  FormEvent,
+  ForwardedRef,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from 'react';
 import { type LoginUser } from '../App';
 
 type Props = {
@@ -6,22 +13,39 @@ type Props = {
   login: (user: LoginUser) => void;
 };
 
-export default function Login({ login }: Props) {
+export type LoginHandler = {
+  focus: (prop: string) => void;
+};
+
+export default forwardRef(function Login(
+  { login }: Props,
+  ref: ForwardedRef<LoginHandler>
+) {
   // const [id, setId] = useState(0);
   // const [name, setName] = useState('');
   const idRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
+
+  const handler: LoginHandler = {
+    focus(prop: string) {
+      if (prop === 'id') idRef.current?.focus();
+      if (prop === 'name') nameRef.current?.focus();
+    },
+  };
+
+  useImperativeHandle(ref, () => handler);
+
   const signIn = (e: FormEvent<HTMLFormElement>) => {
-    const id = Number(idRef.current?.value);
-    const name = nameRef.current?.value;
+    const id = Number(idRef.current?.value) || 0;
+    const name = nameRef.current?.value || '';
     e.preventDefault();
     if (!idRef.current || !nameRef.current) {
       return alert('Dom요소 렌더링 전');
     }
-    if (!id || !name) {
-      idRef.current.focus();
-      return alert('Please enter Id and name.');
-    }
+    // if (!id || !name) {
+    //   idRef.current.focus();
+    //   return alert('Please enter Id and name.');
+    // }
 
     login({ id, name });
   };
@@ -45,4 +69,4 @@ export default function Login({ login }: Props) {
       <button type='submit'>Sign In</button>
     </form>
   );
-}
+});

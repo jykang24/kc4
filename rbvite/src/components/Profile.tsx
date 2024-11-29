@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { CartItem, Session } from '../App';
 import CartItemEditor from './CartItemEditor';
 import { FaTrashCan } from 'react-icons/fa6';
+import Button from './ui/Button';
 type Props = {
   session: Session;
   logout: () => void;
@@ -46,7 +47,7 @@ export default function Profile({
             toggleAdding={toggleAdding}
           ></CartItemEditor>
         ) : (
-          <button onClick={() => setAdding(true)}>+Add Item</button>
+          <Button onClick={() => setAdding(true)}>+Add Item</Button>
         )}
       </ul>
     </div>

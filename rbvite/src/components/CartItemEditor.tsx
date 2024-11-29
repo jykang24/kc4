@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useRef } from 'react';
 import { type CartItem } from '../App';
+import Button from './ui/Button';
 
 type Props = {
   addCartItem: (cartItem: CartItem) => void;
@@ -44,10 +45,12 @@ export default function CartItemEditor({ addCartItem, toggleAdding }: Props) {
         <input type='hidden' ref={idRef} />
         <input placeholder='상품명...' ref={itemNameRef} />
         <input type='number' placeholder='가격...' ref={itemPriceRef} />
-        <button type='reset' onClick={toggleAdding}>
+        <Button type='reset' onClick={toggleAdding} classNames='btn-danger'>
           Cancel
-        </button>
-        <button type='submit'>Save</button>
+        </Button>
+        <Button type='submit' classNames='btn-primary'>
+          Save
+        </Button>
       </form>
     </>
   );
