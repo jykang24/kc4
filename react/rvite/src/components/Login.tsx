@@ -1,56 +1,61 @@
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
+import {
+  FormEvent,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from 'react';
 import Button from './ui/Button';
 import Input from './ui/Input';
-import { LoginUser } from '../App';
+import { useSession } from '../hooks/session-context';
 
-type Props = {
-  login: (user: LoginUser) => void;
+// type Props = {
+//   login: (user: LoginUser) => void;
+// };
+export type LoginHandler = {
+  focusInput: () => void;
 };
-
-export default function Login({ login }: Props) {
+function Login() {
+  const { login, loginRef: ref } = useSession();
   const idRef = useRef<HTMLInputElement>(null);
-  const [id, setId] = useState(0);
-  const [name, setName] = useState('');
+  const nameRef = useRef<HTMLInputElement>(null);
 
-  const changeId = (e: ChangeEvent<HTMLInputElement>) => {
-    //e.preventDefault();
-    setId(+e.currentTarget.value);
+  const handler: LoginHandler = {
+    focusInput: () => {
+      alert('Input the id and name');
+      idRef.current?.focus();
+    },
   };
+  useImperativeHandle(ref, () => handler);
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     const id = Number(idRef.current?.value);
+    const name = nameRef.current?.value || '';
+
     e.preventDefault();
-    if (!id || !name) {
-      return alert('Input the id and name');
-    }
+
     login({ id, name });
   };
 
   useEffect(() => {
-    if (idRef.current) {
-      idRef.current.focus();
-    }
+    idRef.current?.focus();
   }, []);
 
   return (
     <form onSubmit={submitHandler} className='flex gap-2 border p-3'>
       <div>
         <label htmlFor='loginId'>ID:</label>
-        {/* //<Input type='number' id='loginId' onChange={changeId} value={id}/> */}
-        <Input type='number' id='loginId' ref={idRef} />
+        <input type='number' id='loginId' ref={idRef} />
       </div>
-      <label htmlFor='loginId'>
-        Name:
-        <Input
-          id='loginId'
-          value={name}
-          onChange={(e) => {
-            e.preventDefault();
-            setName(e.currentTarget.value);
-          }}
-        />
-      </label>
+      <div>
+        <label htmlFor='loginName'> Name:</label>
+        <Input id='loginName' ref={nameRef} />
+      </div>
+
       <Button type='submit'>Sign In</Button>
     </form>
   );
 }
+
+const LoginImpl = forwardRef(Login);
+export default LoginImpl;
