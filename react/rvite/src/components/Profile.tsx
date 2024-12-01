@@ -16,7 +16,8 @@ export default function Profile() {
 
   const toggleEditing = () => setEditing((pre) => !pre);
   const setItem = (item: CartItem) => {
-    console.log('item:', item);
+    //console.log('item:', item);
+    //setEditing(true);
     toggleEditing();
     setCartItem(item);
   };
