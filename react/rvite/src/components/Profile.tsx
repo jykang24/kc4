@@ -5,7 +5,7 @@ import Hello from './Hello';
 import Button from './ui/Button';
 import CartItemEditor from './ui/CartItemEditor';
 import { FaTrashCan } from 'react-icons/fa6';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 export default function Profile() {
   const { plusCount } = useCounter();
@@ -13,6 +13,11 @@ export default function Profile() {
   const [isEditing, setEditing] = useState(false);
   const { id, name } = session.loginUser || { id: 0, name: '' };
   const [cartItem, setCartItem] = useState<CartItem | null>(null);
+
+  const totalPrice = useMemo(
+    () => session.cart.reduce((acc, item) => acc + item.price, 0),
+    [session.cart]
+  );
 
   const toggleEditing = () => setEditing((pre) => !pre);
   const setItem = (item: CartItem) => {
@@ -31,7 +36,10 @@ export default function Profile() {
       </button>
       <ul className='space-y-2 border border-green-400 p-2'>
         {session.cart.map((item) => (
-          <li key={item.id} className='grid grid-cols-3 justify-around'>
+          <li
+            key={item.id}
+            className='grid grid-cols-3 justify-around hover:bg-gray-200'
+          >
             {item.name} <small>{item.price.toLocaleString()}</small>
             <div className='grid grid-cols-2 gap-3'>
               <Button
@@ -56,6 +64,10 @@ export default function Profile() {
           ) : (
             <Button onClick={() => setEditing(true)}>+ Add</Button>
           )}
+        </li>
+        <li className='flex gap-5'>
+          <span>*총액: {totalPrice.toLocaleString()}원</span>
+          <span>*할인액: {totalPrice.toLocaleString()}원</span>
         </li>
       </ul>
     </>
