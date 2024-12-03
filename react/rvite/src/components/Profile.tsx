@@ -26,6 +26,10 @@ export default function Profile() {
     toggleEditing();
     setCartItem(item);
   };
+  const clearItem = () => {
+    setCartItem(null);
+    setEditing(true);
+  };
 
   return (
     <>
@@ -62,7 +66,7 @@ export default function Profile() {
               toggleEditing={toggleEditing}
             />
           ) : (
-            <Button onClick={() => setEditing(true)}>+ Add</Button>
+            <Button onClick={clearItem}>+ Add</Button>
           )}
         </li>
         <li className='flex gap-5'>
