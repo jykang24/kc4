@@ -1,8 +1,8 @@
 import { FormEvent, useRef, useState } from 'react';
 import './App.css';
-import TodoItemEditor from './TodoItemEditor';
-//import TodoItem from './TodoItem';
-type todoType = {
+//import TodoItemEditor from './TodoItemEditor';
+import TodoItem from './TodoItem';
+export type todoType = {
   id: number;
   text: string;
 }[];
@@ -10,25 +10,22 @@ type todoType = {
 function App() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [todo, setTodo] = useState<todoType>([]);
-  const [isEdit, setEdit] = useState(false);
 
   const formSubmit = (e: FormEvent) => {
     e.preventDefault();
 
     const todoText = inputRef.current?.value;
     if (!todoText) {
-      return alert('todoText is null');
+      inputRef.current?.focus();
+      return alert('todo를 입력하세요');
     }
-    //TODO:???
+
     setTodo([...todo, { id: Date.now(), text: todoText }]);
     inputRef.current.value = ''; //아이템추가후 인풋창 초기화
   };
 
-  const editTodo = () => {
-    setEdit(true);
-  };
   const deleteTodo = (todoId: number) => {
-    setTodo([...todo.filter((item) => item.id !== todoId)]);
+    setTodo(todo.filter((item) => item.id !== todoId));
   };
 
   return (
@@ -45,38 +42,14 @@ function App() {
           추가
         </button>
       </form>
-
-      <ul>
-        {todo.length > 0 ? (
-          todo.map((item) => (
-            <li
-              key={item.id}
-              className='flex justify-center items-center gap-2'
-            >
-              {item.text}
-              {isEdit ? (
-                <TodoItemEditor />
-              ) : (
-                <div>
-                  <button onClick={editTodo} className='bg-blue-300'>
-                    수정
-                  </button>
-                  <button
-                    onClick={() => deleteTodo(item.id)}
-                    className='bg-red-500'
-                  >
-                    삭제
-                  </button>
-                </div>
-              )}
-            </li>
-          ))
-        ) : (
-          <p>야호! 오늘 할일이 없습니다</p>
-        )}
-      </ul>
+      {todo.length > 0 ? (
+        <TodoItem todo={todo} deleteTodo={deleteTodo} />
+      ) : (
+        <p>야호! 오늘 할일이 없습니다</p>
+      )}
     </>
   );
 }
-
+//TODO: 이렇게 바꿔보기
+//todo.map((item)=><li><Todoitem id={item,id} ></li>)
 export default App;
