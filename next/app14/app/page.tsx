@@ -56,12 +56,14 @@ export default function Home() {
         {isAddingBook ? (
           <BookEditor
             bookList={bookList}
-            setBookList={() => setBookList}
+            setBookList={setBookList}
             toggleEditing={toggleBook}
             plusCount={() => setCount((pre) => pre + 1)}
           />
         ) : (
-          <Button onClick={addBook}>+ Add Book ({bookList.length})</Button>
+          <Button onClick={addBook}>
+            + Add Book ({count}) ({bookList.length})
+          </Button>
         )}
       </main>
 
