@@ -1,9 +1,10 @@
 type Props = {
+  id: number;
   imgUrl?: string;
   title: string;
   description?: string; //TODO:추가해야함
 };
-export default function Mark({ imgUrl, title, description }: Props) {
+export default function Mark({ id, imgUrl, title, description }: Props) {
   return (
     <div className='border-2 border-white bg-slate-200 flex gap-2 rounded-sm p-2'>
       {/* TODO: img는 임시로 만든것, 크롤링해서 가져올것임 */}
@@ -41,7 +42,6 @@ export default function Mark({ imgUrl, title, description }: Props) {
         />
       </svg>
       {/* TODO: delete버튼 추가하기 */}
-      {/* <button className='bg-slate-500 p-1'>Edit</button> */}
     </div>
   );
 }
