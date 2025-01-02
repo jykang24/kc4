@@ -49,11 +49,6 @@ export default function BookEditor({
         ...bookList,
         { id: bookList.length + 20, name: inputRef.current.value || '' },
       ]); //TODO: id바꾸기 test중
-      //   setBookList((preBookList: BookType[]) => [
-      //     ...preBookList,
-      //     { id: 1000000, name: inputRef.current?.value || '' },
-      //   ]);
-      //console.log('bookList added>>', bookList); //여기선 바로 반영이 안됨.
       plusCount();
     } else {
       setBookList(
@@ -71,37 +66,6 @@ export default function BookEditor({
   };
   //book있으면 edit모드, formSubmit할때 edit
   //book없으면 add모드, formSubmit할때 add
-
-  //   const formSubmit1 = (e: FormEvent) => {
-  //     e.preventDefault();
-  //     if (!inputRef) {
-  //       alert('inputRef is null');
-  //       return;
-  //     }
-  //     if (!inputRef.current?.value) {
-  //       inputRef.current?.focus(); //QQQ 왜 null?
-  //       return alert('please enter book name');
-  //     }
-  //     //TODO: 여기부터 하는중
-  //     //QQQ isAdding? isEditing?
-  //     //id = 있으면 받고 || 0;
-  //     //Adding이면 (id=0) book.id, book.name추가해서 [...bookList, newBook:{id:xx,name:xxx}]
-  //     // if (isEditing) {
-  //     //   //edit중
-  //     // }
-  //     if (!isEditing) {
-  //       //add중
-  //       setBookList(...bookList);
-  //       plusCount();
-  //     }
-  //     //Editing이면 book.id인 book을 찾아서
-  //     // setbooklist( ...boolist.filter(book=>book.id!==id), book={id:id,name:newName}
-  //     //})
-
-  //     //setBook(...Book, {id: ,name: inputRef.current.value});
-  //     toggleEditing();
-  //     console.log('Book Editor Submit!!!');
-  //   };
 
   return (
     <form

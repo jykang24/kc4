@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Mark from './Mark';
 import MarkEditor from './MarkEditor';
 
 type Props = {
@@ -39,6 +40,10 @@ export default function Book({ id, name }: Props) {
 
   const toggleMark = () => setAddingMark((pre) => !pre);
 
+  useEffect(() => {
+    console.log('markList updated rendering now...');
+  }, [markList]);
+
   return (
     <div className='flex flex-col gap-4 bg-slate-200 p-2 rounded-sm'>
       {/* {isEditingBook ? (
@@ -57,14 +62,25 @@ export default function Book({ id, name }: Props) {
       </ul>
 
       {markList.length > 0 ? (
-        markList.map((mark) => <li key={mark.id}>{mark.title}</li>)
+        markList.map((mark) => (
+          <Mark
+            key={mark.id}
+            id={mark.id}
+            title={mark.title}
+            description={mark.description}
+            imgUrl={mark.imgUrl}
+          />
+        ))
       ) : (
         <p>There is no mark here.</p>
       )}
-      {/* TODO: Mark자리에 mark컴포넌트로 수정! */}
 
       {isAddingMark ? (
-        <MarkEditor toggleEditing={toggleMark} />
+        <MarkEditor
+          markList={markList}
+          setMarkList={setMarkList}
+          toggleEditing={toggleMark}
+        />
       ) : (
         <Button onClick={toggleMark}>+ Add Mark</Button>
       )}
