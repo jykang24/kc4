@@ -29,29 +29,37 @@ export default function MarkEditor({
   const formSubmit = (e: FormEvent) => {
     e.preventDefault();
     console.log('Mark Submit!!!');
-    //TODO:save눌렀을때 저장되는것 처리
+
     if (!urlRef) {
       return alert('Ref is null');
     }
 
-    setMarkList([
-      ...markList,
-      {
-        id: 9999,
-        description: '임시설명... 나중에 변경할것', //TODO:
-        title: titleRef.current?.value || '',
-        imgUrl: imgRef.current?.value || '',
-      },
-    ]);
+    //TODO:save눌렀을때 저장되는것 처리
+    //setMarkList([...markList, { id: Math.max(...markList.map((mark) => mark.id), 0) + 1, title, imgUrl, description }]);
   };
 
   const handleClick = async (e: FormEvent) => {
     e.preventDefault();
     console.log('Fetch Button clicked!!');
+
     if (!urlRef) return alert('urlRef is null');
-    const metadata = await fetchData(urlRef.current?.value || ' ');
-    console.log('metadata>>', metadata);
-    // setMarkList()
+
+    const { title, imgUrl, description } = await fetchData(
+      urlRef.current?.value || ' '
+    );
+
+    console.log('title', title);
+    console.log('description', description);
+    console.log('imgUrl', imgUrl);
+    setMarkList([
+      ...markList,
+      {
+        id: Math.max(...markList.map((mark) => mark.id), 0) + 1,
+        title,
+        imgUrl,
+        description,
+      },
+    ]);
   };
 
   useEffect(() => {
@@ -68,8 +76,6 @@ export default function MarkEditor({
           className='flex-1'
           ref={urlRef}
         />
-        {/* <button className='bg-blue-200 rounded-md p-1'>Import</button> */}
-        {/* <FetchButton url={urlRef.current.value} markList={markList}></FetchButton> */}
         <Button onClick={handleClick}>Fetch</Button>
       </div>
       {/* <label className='flex flex-col'>
