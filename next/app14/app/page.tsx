@@ -14,10 +14,7 @@ type BookType = {
 };
 
 export default function Home() {
-  //const [bookList, setBookList] = useState<BookType[]>([]); //QQQ books상태관리?
-  const [bookList, setBookList] = useState<BookType[]>([
-    { id: 1, name: 'Bookmark mark' },
-  ]);
+  const [bookList, setBookList] = useState<BookType[]>([]); //books상태관리?
   const [isAddingBook, setAddingBook] = useState(false);
 
   const addBook = () => {
@@ -26,7 +23,7 @@ export default function Home() {
   const toggleBook = () => setAddingBook((pre) => !pre);
 
   useEffect(() => {
-    console.log('updated BookList, rendering now...', bookList);
+    console.log('updated BookList, rendering page now...', bookList);
   }, [bookList]);
 
   return (
@@ -35,7 +32,15 @@ export default function Home() {
 
       <main className='flex gap-8 row-start-2 items-center sm:items-start'>
         {bookList.map((book) => {
-          return <Book key={book.id} id={book.id} name={book.name} />;
+          return (
+            <Book
+              key={book.id}
+              id={book.id}
+              name={book.name}
+              bookList={bookList}
+              setBookList={setBookList}
+            />
+          );
         })}
 
         {isAddingBook ? (
