@@ -11,24 +11,16 @@ type Props = {
   // withDel:boolean;
 };
 type MarkType = {
-  //TODO: type수정하기
   id: number;
-  imgUrl?: string;
+  url: string;
+  imgUrl: string;
   title: string;
   description: string;
 };
 
-const sampleMark = [
-  {
-    id: 999,
-    title: '네이버',
-    description: '네이버 메인에서 다양한 정보와 유용한 컨텐츠를 만나 보세요',
-  },
-];
-
 //TODO: 길어지면 스크롤되도록
 export default function Book({ id, name }: Props) {
-  const [markList, setMarkList] = useState<MarkType[]>(sampleMark);
+  const [markList, setMarkList] = useState<MarkType[]>([]);
 
   //const [isEditingBook, setEditingBook] = useState(false);
   const [isAddingMark, setAddingMark] = useState(false);
@@ -41,7 +33,7 @@ export default function Book({ id, name }: Props) {
   const toggleMark = () => setAddingMark((pre) => !pre);
 
   useEffect(() => {
-    console.log('markList updated rendering now...');
+    console.log('markList updated Book rendering now...');
   }, [markList]);
 
   return (
@@ -53,26 +45,25 @@ export default function Book({ id, name }: Props) {
           {id} {name}
         </p>
       )} */}
+
+      {/* /* TODO: 누르면 book name수정할수있게 변경 */}
       <p className='text-center m-2'>
         {id} {name}
       </p>
-
-      <ul>
-        <li>여기에 Mark가 들어갈 자리임</li>
-      </ul>
 
       {markList.length > 0 ? (
         markList.map((mark) => (
           <Mark
             key={mark.id}
             id={mark.id}
+            url={mark.url}
             title={mark.title}
             description={mark.description}
             imgUrl={mark.imgUrl}
           />
         ))
       ) : (
-        <p>There is no mark here.</p>
+        <p>There is no mark here... (っ °Д °;)っ</p>
       )}
 
       {isAddingMark ? (
@@ -84,8 +75,6 @@ export default function Book({ id, name }: Props) {
       ) : (
         <Button onClick={toggleMark}>+ Add Mark</Button>
       )}
-
-      {/* <div>{여기에 mark들이 들어갈것임}</div> */}
     </div>
   );
 }

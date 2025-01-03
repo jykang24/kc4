@@ -12,16 +12,14 @@ type Props = {
   setBookList: (booklist: BookType[]) => void;
   book?: BookType; //QQQ 단일 book을 받을건지, list로 받을건지?
   toggleEditing: () => void;
-  plusCount: () => void;
 };
 
-//TODO: book삭제시 plusCount말고 minusCount
+//TODO: book삭제시 minusCount
 export default function BookEditor({
   bookList,
   setBookList,
   book,
   toggleEditing,
-  plusCount,
 }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isEditing, setEditing] = useState(false); //isEditing true= edit할 상태, false=add할 상태
@@ -44,12 +42,10 @@ export default function BookEditor({
       //add
       console.log('Book Editor adding now');
       console.log('Before bookList add>>', bookList);
-
       setBookList([
         ...bookList,
-        { id: bookList.length + 20, name: inputRef.current.value || '' },
+        { id: Date.now(), name: inputRef.current.value || '' },
       ]); //TODO: id바꾸기 test중
-      plusCount();
     } else {
       setBookList(
         bookList.map((book) =>

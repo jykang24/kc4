@@ -2,11 +2,10 @@ import { Button } from '@/components/ui/button';
 import { FormEvent, useEffect, useRef } from 'react';
 import { fetchData } from '../actions/fetchData';
 
-// import FetchButton from './fetchButton';
-
 export type MarkType = {
   id: number;
-  imgUrl?: string;
+  url: string;
+  imgUrl: string;
   title: string;
   description: string;
 };
@@ -44,26 +43,31 @@ export default function MarkEditor({
 
     if (!urlRef) return alert('urlRef is null');
 
-    const { title, imgUrl, description } = await fetchData(
-      urlRef.current?.value || ' '
-    );
+    if (urlRef.current != null || urlRef.current != undefined) {
+      const { title, imgUrl, description } = await fetchData(
+        urlRef.current.value || ' '
+      );
 
-    console.log('title', title);
-    console.log('description', description);
-    console.log('imgUrl', imgUrl);
-    setMarkList([
-      ...markList,
-      {
-        id: Math.max(...markList.map((mark) => mark.id), 0) + 1,
-        title,
-        imgUrl,
-        description,
-      },
-    ]);
+      console.log('title', title);
+      console.log('description', description);
+      console.log('imgUrl', imgUrl);
+      console.log('url', urlRef.current.value); //Test용
+
+      setMarkList([
+        ...markList,
+        {
+          id: Math.max(...markList.map((mark) => mark.id), 0) + 1,
+          url: urlRef.current.value,
+          title,
+          imgUrl,
+          description,
+        },
+      ]);
+    }
   };
 
   useEffect(() => {
-    console.log('markList updated, Mark Editor rendering..');
+    console.log('markList updated, MarkEditor rendering..');
   }, [markList]);
 
   return (
