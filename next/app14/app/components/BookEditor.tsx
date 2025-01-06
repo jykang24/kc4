@@ -8,23 +8,19 @@ type BookType = {
   // withDel:boolean; //TODO:
 };
 type Props = {
-  bookList: BookType[];
-  setBookList: (booklist: BookType[]) => void;
-  book?: BookType; //QQQ 단일 book을 받을건지, list로 받을건지?
-  toggleEditing: () => void;
+  // bookList: BookType[];
+  // setBookList: (booklist: BookType[]) => void;
+  book: BookType | null; //QQQ 단일 book을 받을건지, list로 받을건지?
+  saveBookList: (book: BookType) => void;
+  toggleBook: () => void;
 };
 
-//TODO: book삭제시 minusCount
-export default function BookEditor({
-  bookList,
-  setBookList,
-  book,
-  toggleEditing,
-}: Props) {
+export default function BookEditor({ saveBookList, book, toggleBook }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [isEditing, setEditing] = useState(false); //isEditing true= edit할 상태, false=add할 상태
-  if (book) setEditing(true); //book있으면 edit, 없으면 add
-  const BOOK_ID = book?.id || 0; //book있으면 id,
+  //const [isEditing, setEditing] = useState(false); //isEditing true= edit할 상태, false=add할 상태
+
+  //if (book) setEditing(true); //book있으면 edit, 없으면 add
+  const BOOK_ID = book?.id || 0; //book있으면 id,없으면 0
 
   const formSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -37,28 +33,25 @@ export default function BookEditor({
       inputRef.current?.focus(); //QQQ 왜 null?
       return alert('please enter book name');
     }
-
-    if (!isEditing) {
-      //add
-      console.log('Book Editor adding now');
-      console.log('Before bookList add>>', bookList);
-      setBookList([
-        ...bookList,
-        { id: Date.now(), name: inputRef.current.value || '' },
-      ]); //TODO: id바꾸기 test중
-    } else {
-      setBookList(
-        bookList.map((book) =>
-          book.id === BOOK_ID
-            ? { ...book, name: inputRef.current?.value || '' }
-            : book
-        )
-      );
-      console.log('Book Editor editing now');
-    }
+    saveBookList({ id: BOOK_ID, name: inputRef.current.value });
+    // if (!isEditing) {
+    //   //add
+    //   console.log('Book Editor adding now');
+    //   saveBookList({ id: BOOK_ID, name: inputRef.current.value });
+    // } else {
+    //   //TODO: 수정중
+    //   // setBookList(
+    //   //   bookList.map((book) =>
+    //   //     book.id === BOOK_ID
+    //   //       ? { ...book, name: inputRef.current?.value || '' }
+    //   //       : book
+    //   //   )
+    //   // );
+    //   console.log('Book Editor editing now');
+    // }
 
     console.log('Book editor submit now!!');
-    toggleEditing(); //save버튼 눌러서 submit하면 toggle
+    toggleBook(); //save버튼 눌러서 submit하면 toggle
   };
   //book있으면 edit모드, formSubmit할때 edit
   //book없으면 add모드, formSubmit할때 add
@@ -83,7 +76,7 @@ export default function BookEditor({
         </label>
       </div>
       <div className='flex justify-around'>
-        <button onClick={toggleEditing} className='rounded-md bg-green-200 p-1'>
+        <button onClick={toggleBook} className='rounded-md bg-green-200 p-1'>
           Close
         </button>
         <button
