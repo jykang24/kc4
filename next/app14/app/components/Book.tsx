@@ -10,9 +10,10 @@ type BookType = {
 type Props = {
   id: number;
   name: string;
-  bookList: BookType[];
-  setBookList: (booklist: BookType[]) => void;
-  //   editBook?: (id: number) => void;
+  // bookList: BookType[];
+  // setBookList: (booklist: BookType[]) => void;
+  deleteBook: (id: number) => void;
+  editBook: (id: number) => void;
   // withDel:boolean;
 };
 type MarkType = {
@@ -24,7 +25,7 @@ type MarkType = {
 };
 
 //TODO: 길어지면 스크롤되도록
-export default function Book({ id, name, bookList, setBookList }: Props) {
+export default function Book({ id, name, editBook, deleteBook }: Props) {
   const [markList, setMarkList] = useState<MarkType[]>([]);
 
   //const [isEditingBook, setEditingBook] = useState(false);
@@ -36,15 +37,6 @@ export default function Book({ id, name, bookList, setBookList }: Props) {
   //   const toggleBook = () => setEditingBook(true);
 
   const toggleMark = () => setAddingMark((pre) => !pre);
-  const deleteBook = () => {
-    const isDeleting = confirm('현재 book폴더를 삭제할까요?');
-    //delete작업중
-    if (isDeleting) {
-      // bookList, setBookList
-      setBookList(bookList.filter((book) => book.id !== id));
-      alert('book폴더를 삭제했습니다');
-    }
-  };
 
   useEffect(() => {
     console.log('markList updated Book rendering now...');
@@ -61,8 +53,8 @@ export default function Book({ id, name, bookList, setBookList }: Props) {
       )} */}
 
       {/* /* TODO: 누르면 book name수정할수있게 변경 */}
-      <p className='text-center m-2'>
-        {name} <Button onClick={deleteBook}>Delete Book</Button>
+      <p className='text-center m-2' onClick={() => editBook(id)}>
+        {name} <Button onClick={() => deleteBook(id)}>Delete Book</Button>
       </p>
 
       {/* <span>
