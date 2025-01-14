@@ -17,7 +17,9 @@ function deepCopy(obj) {
     }
     return resultSet;
   }
-
+  if (obj instanceof WeakMap || obj instanceof WeakSet) {
+    return obj;
+  }
   if (typeof obj !== "object" || obj === null) return obj;
   const resultObj = Array.isArray(obj) ? [] : {};
   for (const key of Reflect.ownKeys(obj)) {
